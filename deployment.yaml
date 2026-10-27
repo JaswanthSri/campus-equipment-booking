@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: campus-equipment-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: campus-equipment
+  template:
+    metadata:
+      labels:
+        app: campus-equipment
+    spec:
+      containers:
+      - name: campus-equipment
+        image: campus-equipment-booking:set-c
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: campus-equipment-service
+spec:
+  type: NodePort
+  selector:
+    app: campus-equipment
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30088
