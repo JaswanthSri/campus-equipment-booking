@@ -23,13 +23,13 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            environment {
-                KUBECONFIG = '/var/lib/jenkins/.kube/config'
-            }
             steps {
-                sh 'minikube image load campus-equipment-booking:set-c'
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl rollout status deployment/campus-equipment-deployment'
+                // Transfer image directly to minikube via docker daemon
+                sh 'docker save campus-equipment-booking:set-c | minikube image load -'
+                
+                // Apply manifests using elevated privileges pointing to host kubeconfig
+                sh 'sudo kubectl --kubeconfig=/home/snucse/.kube/config apply -f deployment.yaml'
+                sh 'sudo kubectl --kubeconfig=/home/snucse/.kube/config rollout status deployment/campus-equipment-deployment'
             }
         }
     }
