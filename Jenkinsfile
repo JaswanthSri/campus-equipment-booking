@@ -1,16 +1,11 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3' // Or whichever Maven name is configured in your Jenkins Global Tool Configuration
-        jdk 'Java 17'
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'feature/equipment-lookup-validation', 
-                    url: 'https://github.com/YOUR_USERNAME/campus-equipment-booking.git'
+                    url: 'https://github.com/JaswanthSri/campus-equipment-booking.git'
             }
         }
 
