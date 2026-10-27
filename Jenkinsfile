@@ -23,6 +23,9 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
+            environment {
+                KUBECONFIG = '/var/lib/jenkins/.kube/config'
+            }
             steps {
                 sh 'minikube image load campus-equipment-booking:set-c'
                 sh 'kubectl apply -f deployment.yaml'
